@@ -18,14 +18,15 @@ namespace MagicVilla_VillaAPI.Repository
 
         public async Task CreateAsync(T entity)
         {
-            await dbSet.AddAsync(entity);
+            _ = await dbSet.AddAsync(entity);
             await SaveAsync();
         }
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>> filter = null, bool tracked = true)
+        public async Task<T> GetAsync(
+            Expression<Func<T, bool>>? filter = null,
+            bool tracked = true)
         {
             IQueryable<T> query = dbSet;
-
             if (!tracked)
             {
                 query = query.AsNoTracking();
@@ -34,14 +35,18 @@ namespace MagicVilla_VillaAPI.Repository
             {
                 query = query.Where(filter);
             }
+            var queryResult = await query.FirstOrDefaultAsync();
+            if (queryResult == null)
+            {
+                throw new Exception("queryResult is null");
+            }
 
-            return await query.FirstOrDefaultAsync();
+            return queryResult;
         }
 
         public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
         {
             IQueryable<T> query = dbSet;
-
             if (filter != null)
             {
                 query = query.Where(filter);
@@ -52,13 +57,13 @@ namespace MagicVilla_VillaAPI.Repository
 
         public async Task RemoveAsync(T entity)
         {
-            dbSet.Remove(entity);
+            _ = dbSet.Remove(entity);
             await SaveAsync();
         }
 
         public async Task SaveAsync()
         {
-            await _db.SaveChangesAsync();
+            _ = await _db.SaveChangesAsync();
         }
     }
 }

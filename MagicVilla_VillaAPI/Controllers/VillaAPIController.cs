@@ -64,7 +64,7 @@ namespace MagicVilla_VillaAPI.Controllers
                     return BadRequest();
                 }
 
-                var villa
+                Villa villa
                     = await _dbVilla.GetAsync(u => u.Id == id);
 
                 if (villa == null)
@@ -151,14 +151,11 @@ namespace MagicVilla_VillaAPI.Controllers
                 {
                     return BadRequest();
                 }
-
-                var villa = await _dbVilla.GetAsync(u => u.Id == id);
-
+                Villa villa = await _dbVilla.GetAsync(u => u.Id == id);
                 if (villa == null)
                 {
                     return NotFound();
                 }
-
                 await _dbVilla.RemoveAsync(villa);
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
@@ -187,10 +184,8 @@ namespace MagicVilla_VillaAPI.Controllers
             {
                 return BadRequest();
             }
-
             Villa model = _mapper.Map<Villa>(updateDTO);
-
-            await _dbVilla.UpdateAsync(model);
+            _ = await _dbVilla.UpdateAsync(model);
             _response.StatusCode = HttpStatusCode.NoContent;
             _response.IsSuccess = true;
 
@@ -209,25 +204,20 @@ namespace MagicVilla_VillaAPI.Controllers
             {
                 return BadRequest();
             }
-
-            var villa = await _dbVilla.GetAsync(u => u.Id == id, tracked: false);
+            Villa villa
+                = await _dbVilla.GetAsync(u => u.Id == id, tracked: false);
             VillaUpdateDTO villaDTO = _mapper.Map<VillaUpdateDTO>(villa);
-
             if (villa == null)
             {
                 return BadRequest();
             }
             patchDto.ApplyTo(villaDTO, ModelState);
-
             Villa model = _mapper.Map<Villa>(villaDTO);
+            _ = await _dbVilla.UpdateAsync(model);
 
-            await _dbVilla.UpdateAsync(model);
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            return NoContent();
+            return !ModelState.IsValid
+                ? (ActionResult<APIResponse>)BadRequest(ModelState)
+                : (ActionResult<APIResponse>)NoContent();
         }
     }
 }

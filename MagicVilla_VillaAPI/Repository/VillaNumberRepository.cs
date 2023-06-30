@@ -4,7 +4,9 @@ using MagicVilla_VillaAPI.Repository.IRepository;
 
 namespace MagicVilla_VillaAPI.Repository
 {
-    public class VillaNumberRepository : Repository<VillaNumber>, IVillaNumberRepository
+    public class VillaNumberRepository :
+        Repository<VillaNumber>,
+        IVillaNumberRepository
     {
         private readonly ApplicationDbContext _db;
 
@@ -15,8 +17,8 @@ namespace MagicVilla_VillaAPI.Repository
         public async Task<VillaNumber> UpdateAsync(VillaNumber entity)
         {
             entity.UpdatedDate = DateTime.Now;
-            _db.VillaNumbers.Update(entity);
-            await _db.SaveChangesAsync();
+            _ = _db.VillaNumbers.Update(entity);
+            _ = await _db.SaveChangesAsync();
 
             return entity;
         }
