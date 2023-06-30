@@ -94,11 +94,18 @@ namespace MagicVilla_VillaAPI.Controllers
         {
             try
             {
+                if (createDTO == null)
+                {
+                    throw new Exception("createDTO is null");
+                }
+                if (createDTO.Name == null)
+                {
+                    throw new Exception("createDTO Name is null");
+                }
                 if (await
                         _dbVilla.GetAsync(
                             u => u.Name.ToLower()
-                                == createDTO.Name.ToLower()
-                                    ) != null)
+                                == createDTO.Name.ToLower()) != null)
                 {
                     ModelState
                         .AddModelError(
