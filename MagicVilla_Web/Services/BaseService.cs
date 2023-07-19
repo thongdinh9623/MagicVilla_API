@@ -1,5 +1,8 @@
-﻿using MagicVilla_VillaAPI.Models;
+﻿using MagicVilla_Utility;
+using MagicVilla_VillaAPI.Models;
 using MagicVilla_Web.Services.IServices;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace MagicVilla_Web.Services
 {
@@ -15,16 +18,51 @@ namespace MagicVilla_Web.Services
             HttpClient = httpClient;
         }
 
-        public Task<T> SendAsync<T>(ApiRequest apiRequest)
+        public async Task<T> SendAsync<T>(ApiRequest apiRequest)
         {
             try
             {
-
+                HttpClient client = HttpClient.CreateClient("MagicAPI");
+                HttpRequestMessage message = new();
+                message.Headers.Add("Accept", "application/json");
+                message.RequestUri = new Uri(apiRequest.Url ?? "");
+                if (apiRequest.Data != null)
+                {
+                    message.Content = new StringContent(
+                        JsonConvert.SerializeObject(apiRequest.Data),
+                        Encoding.UTF8,
+                        "application/json");
+                }
+                message.Method = apiRequest.ApiType switch
+                {
+                    SD.ApiType.POST => HttpMethod.Post,
+                    SD.ApiType.PUT => HttpMethod.Put,
+                    SD.ApiType.DELETE => HttpMethod.Delete,
+                    _ => HttpMethod.Get,
+                };
+                HttpResponseMessage apiResponse
+                    = await client.SendAsync(message);
+                string apiContent
+                    = await apiResponse.Content.ReadAsStringAsync();
+                T? apiContentModel
+                    = JsonConvert.DeserializeObject<T>(apiContent);
+                return apiContentModel == null
+                    ? throw new Exception("apiContentModel null") : apiContentModel;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                APIResponse apiResponse = new()
+                {
+                    ErrorMessages
+                    = new List<string> { Convert.ToString(ex.Message) },
+                    IsSuccess = false,
+                };
+                string apiResponseJson
+                    = JsonConvert.SerializeObject(apiResponse);
+                T? apiResponseModel
+                    = JsonConvert.DeserializeObject<T>(apiResponseJson);
+                return apiResponseModel == null
+                    ? throw new Exception("abc") : apiResponseModel;
             }
         }
     }
