@@ -63,10 +63,8 @@ namespace MagicVilla_VillaAPI.Controllers
                 {
                     return BadRequest();
                 }
-
                 Villa villa
                     = await _dbVilla.GetAsync(u => u.Id == id);
-
                 if (villa == null)
                 {
                     return NotFound();
@@ -96,11 +94,11 @@ namespace MagicVilla_VillaAPI.Controllers
             {
                 if (createDTO == null)
                 {
-                    throw new Exception("createDTO is null");
+                    return BadRequest("createDTO is null");
                 }
                 if (createDTO.Name == null)
                 {
-                    throw new Exception("createDTO Name is null");
+                    return BadRequest("createDTO Name is null");
                 }
                 if (await
                         _dbVilla.GetAsync(
