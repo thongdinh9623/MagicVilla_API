@@ -13,7 +13,7 @@ namespace MagicVilla_VillaAPI.Controllers
     [ApiController]
     public class VillaAPIController : ControllerBase
     {
-        protected APIResponse _response;
+        protected ApiResponse _response;
         private readonly IVillaRepository _dbVilla;
         private readonly IMapper _mapper;
 
@@ -26,7 +26,7 @@ namespace MagicVilla_VillaAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetVillas()
+        public async Task<ActionResult<ApiResponse>> GetVillas()
         {
             try
             {
@@ -55,7 +55,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<APIResponse>> GetVilla(int id)
+        public async Task<ActionResult<ApiResponse>> GetVilla(int id)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> CreateVilla([FromBody] VillaCreateDTO createDTO)
+        public async Task<ActionResult<ApiResponse>> CreateVilla([FromBody] VillaCreateDTO createDTO)
         {
             try
             {
@@ -141,7 +141,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<APIResponse>> DeleteVilla(int id)
+        public async Task<ActionResult<ApiResponse>> DeleteVilla(int id)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [HttpPut("{id:int}", Name = "UpdateVilla")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<APIResponse>> UpdateVilla(
+        public async Task<ActionResult<ApiResponse>> UpdateVilla(
             int id,
             [FromBody] VillaUpdateDTO updateDTO
         )
@@ -193,7 +193,7 @@ namespace MagicVilla_VillaAPI.Controllers
         [HttpPatch("{id:int}", Name = "UpdatePartialVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> UpdatePartialVilla(
+        public async Task<ActionResult<ApiResponse>> UpdatePartialVilla(
             int id,
             JsonPatchDocument<VillaUpdateDTO> patchDto
         )
@@ -214,8 +214,8 @@ namespace MagicVilla_VillaAPI.Controllers
             _ = await _dbVilla.UpdateAsync(model);
 
             return !ModelState.IsValid
-                ? (ActionResult<APIResponse>)BadRequest(ModelState)
-                : (ActionResult<APIResponse>)NoContent();
+                ? (ActionResult<ApiResponse>)BadRequest(ModelState)
+                : (ActionResult<ApiResponse>)NoContent();
         }
     }
 }

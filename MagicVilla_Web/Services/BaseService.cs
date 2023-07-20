@@ -8,7 +8,7 @@ namespace MagicVilla_Web.Services
 {
     public class BaseService : IBaseService
     {
-        public required APIResponse ResponseModel { get; set; }
+        public required ApiResponse ResponseModel { get; set; }
 
         public IHttpClientFactory HttpClient { get; set; }
 
@@ -51,7 +51,7 @@ namespace MagicVilla_Web.Services
             }
             catch (Exception ex)
             {
-                APIResponse apiResponse = new()
+                ApiResponse apiResponse = new()
                 {
                     ErrorMessages
                     = new List<string> { Convert.ToString(ex.Message) },
