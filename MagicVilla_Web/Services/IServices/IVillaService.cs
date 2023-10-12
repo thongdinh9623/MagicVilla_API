@@ -1,4 +1,4 @@
-﻿using MagicVilla_VillaAPI.Models.Dto;
+﻿using MagicVilla_Web.Models.Dto;
 
 namespace MagicVilla_Web.Services.IServices
 {
@@ -8,7 +8,7 @@ namespace MagicVilla_Web.Services.IServices
 
         Task<T> GetAsync<T>(int id);
 
-        Task<T> CreateAsync<T>(VillaCreateDTO dto);
+        Task<T> CreateAsync<T>(VillaCreateDto dto);
 
         Task<T> UpdateAsync<T>(VillaUpdateDTO dto);
 

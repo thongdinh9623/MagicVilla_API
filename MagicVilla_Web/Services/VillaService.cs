@@ -1,6 +1,6 @@
 ﻿using MagicVilla_Utility;
-using MagicVilla_VillaAPI.Models;
-using MagicVilla_VillaAPI.Models.Dto;
+using MagicVilla_Web.Models;
+using MagicVilla_Web.Models.Dto;
 using MagicVilla_Web.Services.IServices;
 
 namespace MagicVilla_Web.Services
@@ -18,7 +18,7 @@ namespace MagicVilla_Web.Services
                     ("ServiceUrls:VillaAPI");
         }
 
-        public Task<T> CreateAsync<T>(VillaCreateDTO dto)
+        public Task<T> CreateAsync<T>(VillaCreateDto dto)
         {
             return SendAsync<T>(new ApiRequest()
             {

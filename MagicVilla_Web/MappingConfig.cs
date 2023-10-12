@@ -7,7 +7,7 @@ namespace MagicVilla_Web
     {
         public MappingConfig()
         {
-            _ = CreateMap<VillaDTO, VillaCreateDTO>().ReverseMap();
+            _ = CreateMap<VillaDTO, VillaCreateDto>().ReverseMap();
             _ = CreateMap<VillaDTO, VillaUpdateDTO>().ReverseMap();
             _ = CreateMap<VillaNumberDTO, VillaNumberCreateDTO>().ReverseMap();
             _ = CreateMap<VillaNumberDTO, VillaNumberUpdateDTO>().ReverseMap();
